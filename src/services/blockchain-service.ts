@@ -38,7 +38,7 @@ export const blockchainService = {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
   downloadEvidence: (evidenceId: string) => 
-    blockchainClient.get(`/api/evidence/${evidenceId}/download`),
+    blockchainClient.get(`/api/evidence/${evidenceId}/download`, { responseType: 'blob' }),
 
   // Network
   getNetworkStatus: () => blockchainClient.get('/api/network/status'),

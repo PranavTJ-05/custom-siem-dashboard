@@ -29,7 +29,7 @@ import {
 import { blockchainService } from "@/services/blockchain-service"
 
 export default function BlockchainPage() {
-  const [blocks, setBlocks] = useState<any[]>([])
+  const [evidenceRecords, setEvidenceRecords] = useState<any[]>([])
   const [stats, setStats] = useState<any>(null)
   const [evidence, setEvidence] = useState<any[]>([])
   const [networkStatus, setNetworkStatus] = useState<any>(null)
@@ -41,17 +41,17 @@ export default function BlockchainPage() {
   const fetchData = async (showLoading = true) => {
     if (showLoading) setLoading(true)
     try {
-      const [blocksRes, statsRes, evidenceRes, statusRes] = await Promise.all([
-        blockchainService.getChain(currentPage),
+      const [recordsRes, statsRes, linesRes, statusRes] = await Promise.all([
+        blockchainService.getEvidence(),
         blockchainService.getChainStats(),
         blockchainService.getLatestLines(100),
         blockchainService.getNetworkStatus()
       ])
 
-      setBlocks(blocksRes.data.data?.blocks || [])
+      setEvidenceRecords(recordsRes.data.data || [])
       setStats(statsRes.data.data)
       
-      const rawEvidence = evidenceRes.data.data || []
+      const rawEvidence = linesRes.data.data || []
       const sortedEvidence = rawEvidence.sort((a: any, b: any) => {
          const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
          const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
@@ -92,7 +92,22 @@ export default function BlockchainPage() {
     }
   }
 
-  if (loading && blocks.length === 0) {
+  const handleDownload = async (evidenceId: string, filename: string) => {
+    try {
+      const res = await blockchainService.downloadEvidence(evidenceId)
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', filename)
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode?.removeChild(link)
+    } catch (err) {
+      console.error("Failed to download evidence:", err)
+    }
+  }
+
+  if (loading && evidenceRecords.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -164,12 +179,12 @@ export default function BlockchainPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Ledger Table */}
+        {/* Evidence Registry Table */}
         <Card className="lg:col-span-2 border-white/5 shadow-2xl bg-slate-900/40 backdrop-blur-xl overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between border-b border-white/5 bg-white/[0.02] py-4">
             <div>
-              <CardTitle className="text-xl font-bold tracking-tight text-white">Mainnet Ledger</CardTitle>
-              <CardDescription className="text-slate-400">Immutable record of all security commits</CardDescription>
+              <CardTitle className="text-xl font-bold tracking-tight text-white">Evidence Registry</CardTitle>
+              <CardDescription className="text-slate-400">Immutable record of all captured files and forensics</CardDescription>
             </div>
             <div className="flex gap-2">
                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/5 text-slate-400" disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>
@@ -184,32 +199,47 @@ export default function BlockchainPage() {
             <Table>
               <TableHeader className="bg-white/[0.01]">
                 <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="w-[80px] text-slate-500 font-bold uppercase text-[10px]">Block</TableHead>
-                  <TableHead className="text-slate-500 font-bold uppercase text-[10px]">Timestamp</TableHead>
-                  <TableHead className="text-slate-500 font-bold uppercase text-[10px]">Hash</TableHead>
+                  <TableHead className="w-[120px] text-slate-500 font-bold uppercase text-[10px]">Evidence ID</TableHead>
+                  <TableHead className="text-slate-500 font-bold uppercase text-[10px]">Metadata</TableHead>
+                  <TableHead className="text-slate-500 font-bold uppercase text-[10px]">Classification</TableHead>
                   <TableHead className="text-right text-slate-500 font-bold uppercase text-[10px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {blocks.length === 0 ? (
+                {evidenceRecords.length === 0 ? (
                   <TableRow>
                      <TableCell colSpan={4} className="h-32 text-center text-slate-500 italic opacity-50">
-                        No blocks found on the current chain segment
+                        No evidence records found on the current chain segment
                      </TableCell>
                   </TableRow>
                 ) : (
-                  blocks.map((block) => (
-                    <TableRow key={block.index} className="border-white/5 group hover:bg-white/[0.02] transition-colors">
-                      <TableCell className="font-black text-primary">#{block.index}</TableCell>
-                      <TableCell className="text-xs text-slate-300 whitespace-nowrap">
-                        12 minutes ago
+                  evidenceRecords.map((record) => (
+                    <TableRow key={record.evidence_id} className="border-white/5 group hover:bg-white/[0.02] transition-colors">
+                      <TableCell className="font-black text-primary text-xs whitespace-nowrap">
+                        {record.evidence_id}
+                        <div className="text-[9px] text-slate-500 font-normal mt-1 flex items-center gap-1">
+                          <Database className="h-2 w-2" /> {(record.content_size_bytes / 1024).toFixed(1)} KB
+                        </div>
                       </TableCell>
-                      <TableCell className="font-mono text-[10px] break-all max-w-[200px] text-slate-400 group-hover:text-slate-200 transition-colors">
-                        {block.hash}
+                      <TableCell>
+                        <div className="font-mono text-xs text-slate-200">{record.filename}</div>
+                        <div className="text-[10px] text-slate-500 mt-1">
+                          {new Date(record.created_at).toLocaleString()}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col gap-1 items-start">
+                          <Badge variant="outline" className="text-[9px] px-1.5 py-0 h-4 border-emerald-900/50 text-emerald-400 bg-emerald-950/20">
+                            {record.attack_type}
+                          </Badge>
+                          <div className="flex items-center gap-1 text-[10px] text-slate-400">
+                             <ShieldCheck className="h-3 w-3 text-slate-500" /> {record.mitre_technique}
+                          </div>
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">
-                         <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-white/10 text-slate-500">
-                           <ChevronRight className="h-4 w-4" />
+                         <Button onClick={() => handleDownload(record.evidence_id, record.filename)} variant="secondary" size="sm" className="h-7 text-[10px] font-bold tracking-widest bg-primary/20 text-primary hover:bg-primary/30 border-none">
+                           DOWNLOAD
                          </Button>
                       </TableCell>
                     </TableRow>
