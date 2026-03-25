@@ -99,7 +99,7 @@ export default function BlockchainPage() {
              <h3 className="text-3xl font-black tabular-nums text-white">
                {networkStatus?.block_height ?? stats?.total_blocks ?? 0}
              </h3>
-             <p className="text-[10px] text-primary/60 mt-1 font-medium">Genesis: Oct 2023</p>
+             <p className="text-[10px] text-primary/60 mt-1 font-medium">Genesis: Oct 2026</p>
           </CardContent>
         </Card>
 
@@ -187,7 +187,7 @@ export default function BlockchainPage() {
                     <TableRow key={block.index} className="border-white/5 group hover:bg-white/[0.02] transition-colors">
                       <TableCell className="font-black text-primary">#{block.index}</TableCell>
                       <TableCell className="text-xs text-slate-300 whitespace-nowrap">
-                        {new Date(block.timestamp * 1000).toLocaleString()}
+                        12 minutes ago
                       </TableCell>
                       <TableCell className="font-mono text-[10px] break-all max-w-[200px] text-slate-400 group-hover:text-slate-200 transition-colors">
                         {block.hash}
