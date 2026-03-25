@@ -1,5 +1,5 @@
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader } from "@/components/ui/sidebar"
-import { LayoutDashboard, Users, ShieldCheck, Activity, Settings, LogOut } from "lucide-react"
+import { LayoutDashboard, Users, ShieldCheck, Settings, LogOut, Database } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 
 const items = [
@@ -17,6 +17,11 @@ const items = [
     title: "SCA",
     url: "/sca",
     icon: ShieldCheck,
+  },
+  {
+    title: "Blockchain",
+    url: "/blockchain",
+    icon: Database,
   },
   {
     title: "Settings",

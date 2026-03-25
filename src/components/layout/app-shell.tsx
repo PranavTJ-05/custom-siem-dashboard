@@ -2,8 +2,22 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/s
 import { AppSidebar } from "./app-sidebar"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useLocation } from "react-router-dom"
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const location = useLocation()
+  
+  const getPageTitle = () => {
+    const path = location.pathname
+    if (path === '/') return 'Overview'
+    if (path === '/agents') return 'Agents'
+    if (path === '/sca') return 'SCA'
+    if (path.startsWith('/sca/')) return 'SCA Detail'
+    if (path === '/blockchain') return 'Blockchain Ledger'
+    if (path === '/settings') return 'Settings'
+    return 'Dashboard'
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -15,7 +29,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2 text-sm font-semibold tracking-tight">
               <span className="text-primary hover:underline cursor-pointer">SIEM Ops</span>
               <span className="text-muted-foreground/50 font-light">/</span>
-              <span className="text-foreground">Overview</span>
+              <span className="text-foreground">{getPageTitle()}</span>
             </div>
           </div>
           <div className="flex items-center gap-4">

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Dashboard from './pages/dashboard'
 import AgentsPage from './pages/agents'
 import ScaPage from './pages/sca'
+import BlockchainPage from './pages/blockchain'
 import LoginPage from './pages/login'
 
 
@@ -26,6 +27,7 @@ function AppRoutes() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/agents" element={<AgentsPage />} />
         <Route path="/sca/:agentId?" element={<ScaPage />} />
+        <Route path="/blockchain" element={<BlockchainPage />} />
         <Route path="/settings" element={<div className="text-2xl font-bold">Settings Coming Soon</div>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
