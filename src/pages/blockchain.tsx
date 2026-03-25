@@ -38,29 +38,44 @@ export default function BlockchainPage() {
   const [verificationResult, setVerificationResult] = useState<any>(null)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const fetchData = async () => {
-    setLoading(true)
+  const fetchData = async (showLoading = true) => {
+    if (showLoading) setLoading(true)
     try {
       const [blocksRes, statsRes, evidenceRes, statusRes] = await Promise.all([
         blockchainService.getChain(currentPage),
         blockchainService.getChainStats(),
-        blockchainService.getLatestLines(),
+        blockchainService.getLatestLines(100),
         blockchainService.getNetworkStatus()
       ])
 
       setBlocks(blocksRes.data.data?.blocks || [])
       setStats(statsRes.data.data)
-      setEvidence(evidenceRes.data.data || [])
+      
+      const rawEvidence = evidenceRes.data.data || []
+      const sortedEvidence = rawEvidence.sort((a: any, b: any) => {
+         const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+         const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+         return timeB - timeA;
+      })
+      setEvidence(sortedEvidence)
+      
       setNetworkStatus(statusRes.data.data)
     } catch (err) {
       console.error("Failed to fetch blockchain data:", err)
     } finally {
-      setLoading(false)
+      if (showLoading) setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchData()
+    fetchData(true)
+    
+    // Poll every 5 seconds for live updates
+    const interval = setInterval(() => {
+      fetchData(false)
+    }, 1000)
+
+    return () => clearInterval(interval)
   }, [currentPage])
 
   const handleVerify = async () => {
@@ -225,19 +240,33 @@ export default function BlockchainPage() {
                   </div>
                 ) : (
                   evidence.map((item, idx) => (
-                    <div key={idx} className="flex flex-col gap-1 p-3 rounded-xl bg-white/[0.03] border border-white/5 shadow-sm hover:border-primary/30 transition-all cursor-default group">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-tighter group-hover:text-primary transition-colors">{item.id}</span>
-                        <span className="text-[9px] font-medium text-slate-600 italic">{item.timestamp || 'Just now'}</span>
+                    <div key={idx} className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/5 shadow-sm hover:border-primary/30 transition-all cursor-default group">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-tighter group-hover:text-primary transition-colors" title={`TX: ${item.tx_id}`}>
+                          {item.evidence_id}
+                        </span>
+                        <span className="text-[9px] font-medium text-slate-600 italic">
+                          {item.timestamp ? new Date(item.timestamp).toLocaleString() : 'Just now'}
+                        </span>
                       </div>
-                      <p className="text-[11px] font-medium text-slate-300 leading-relaxed font-mono">
-                        {item.line}
-                      </p>
+                      <div className="bg-slate-950/50 rounded-md p-2 border border-white/5">
+                        <p className="text-sm font-semibold text-emerald-400 break-all font-mono leading-tight">
+                          {item.last_line}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-1">
+                        <Badge variant="outline" className="text-[8px] px-1 py-0 h-4 border-slate-700 text-slate-400 font-medium lowercase">
+                          {item.filename}
+                        </Badge>
+                        <span className="text-[8px] text-slate-600 font-mono truncate max-w-[100px]" title={item.tx_id}>
+                          tx: {item.tx_id?.substring(0, 8)}...
+                        </span>
+                      </div>
                     </div>
                   ))
                 )}
               </div>
-              <Button variant="ghost" className="w-full mt-6 text-[10px] font-bold tracking-widest uppercase text-slate-500 hover:text-primary flex gap-2 hover:bg-white/5 transition-all" onClick={fetchData}>
+              <Button variant="ghost" className="w-full mt-6 text-[10px] font-bold tracking-widest uppercase text-slate-500 hover:text-primary flex gap-2 hover:bg-white/5 transition-all" onClick={() => fetchData(true)}>
                 <RefreshCw className="h-3 w-3" /> Refresh Streams
               </Button>
             </CardContent>
