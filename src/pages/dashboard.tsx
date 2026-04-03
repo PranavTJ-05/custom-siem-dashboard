@@ -51,9 +51,9 @@ export default function Dashboard() {
         } else {
           // Fallback mock data for demo
           setAgentStats([
-             { name: 'Active', value: 12, color: '#10b981' },
-             { name: 'Disconnected', value: 2, color: '#ef4444' },
-             { name: 'Never Connected', value: 4, color: '#94a3b8' },
+             { name: 'Active', value: 1, color: '#10b981' },
+             { name: 'Disconnected', value: 0, color: '#ef4444' },
+             { name: 'Never Connected', value: 0, color: '#94a3b8' },
           ])
         }
 

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription 
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription
 } from "@/components/ui/card"
 import {
   Table,
@@ -16,11 +16,11 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { 
-  Database, 
-  ShieldCheck, 
-  Activity, 
-  ChevronRight, 
+import {
+  Database,
+  ShieldCheck,
+  Activity,
+  ChevronRight,
   ChevronLeft,
   Loader2,
   FileText,
@@ -50,15 +50,15 @@ export default function BlockchainPage() {
 
       setEvidenceRecords(recordsRes.data.data || [])
       setStats(statsRes.data.data)
-      
+
       const rawEvidence = linesRes.data.data || []
       const sortedEvidence = rawEvidence.sort((a: any, b: any) => {
-         const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
-         const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
-         return timeB - timeA;
+        const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+        const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+        return timeB - timeA;
       })
       setEvidence(sortedEvidence)
-      
+
       setNetworkStatus(statusRes.data.data)
     } catch (err) {
       console.error("Failed to fetch blockchain data:", err)
@@ -69,7 +69,7 @@ export default function BlockchainPage() {
 
   useEffect(() => {
     fetchData(true)
-    
+
     // Poll every 5 seconds for live updates
     const interval = setInterval(() => {
       fetchData(false)
@@ -122,53 +122,53 @@ export default function BlockchainPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-slate-900/40 backdrop-blur-md border-white/5 shadow-2xl overflow-hidden group">
           <CardContent className="p-6 relative">
-             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <Database className="h-12 w-12 text-primary" />
-             </div>
-             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Block Height</p>
-             <h3 className="text-3xl font-black tabular-nums text-white">
-               {networkStatus?.block_height ?? stats?.total_blocks ?? 0}
-             </h3>
-             <p className="text-[10px] text-primary/60 mt-1 font-medium">Genesis: Oct 2026</p>
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+              <Database className="h-12 w-12 text-primary" />
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Block Height</p>
+            <h3 className="text-3xl font-black tabular-nums text-white">
+              {networkStatus?.block_height ?? stats?.total_blocks ?? 0}
+            </h3>
+            <p className="text-[10px] text-primary/60 mt-1 font-medium">Genesis: Mar 2025</p>
           </CardContent>
         </Card>
 
         <Card className="bg-slate-900/40 backdrop-blur-md border-white/5 shadow-2xl group">
           <CardContent className="p-6 relative">
-             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <Activity className="h-12 w-12 text-blue-500" />
-             </div>
-             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Live Transactions</p>
-             <h3 className="text-3xl font-black tabular-nums text-white">
-               {stats?.total_transactions || 0}
-             </h3>
-             <p className="text-[10px] text-blue-500/60 mt-1 font-medium">Immutability Guaranteed</p>
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+              <Activity className="h-12 w-12 text-blue-500" />
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Live Transactions</p>
+            <h3 className="text-3xl font-black tabular-nums text-white">
+              {stats?.total_transactions || 0}
+            </h3>
+            <p className="text-[10px] text-blue-500/60 mt-1 font-medium">Immutability Guaranteed</p>
           </CardContent>
         </Card>
 
         <Card className="bg-slate-900/40 backdrop-blur-md border-white/5 shadow-2xl group">
           <CardContent className="p-6 relative">
-             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <ShieldCheck className="h-12 w-12 text-emerald-500" />
-             </div>
-             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Network Status</p>
-             <div className="flex items-center gap-2 mt-1">
-                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <h3 className="text-lg font-bold uppercase tracking-tight text-white">{networkStatus?.status || 'Online'}</h3>
-             </div>
-             <p className="text-[10px] text-emerald-500/60 mt-1 font-medium italic">{networkStatus?.node_count || 12} decentralized nodes</p>
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+              <ShieldCheck className="h-12 w-12 text-emerald-500" />
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Network Status</p>
+            <div className="flex items-center gap-2 mt-1">
+              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <h3 className="text-lg font-bold uppercase tracking-tight text-white">{networkStatus?.status || 'Online'}</h3>
+            </div>
+            <p className="text-[10px] text-emerald-500/60 mt-1 font-medium italic">{networkStatus?.node_count || 12} decentralized nodes</p>
           </CardContent>
         </Card>
 
         <Card className="bg-primary text-white border-none shadow-xl relative overflow-hidden flex flex-col justify-center items-center group cursor-pointer transition-all hover:scale-105" onClick={handleVerify}>
           <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
           <CardContent className="p-0 z-10 text-center flex flex-col items-center gap-2">
-             {verifying ? (
-               <Loader2 className="h-6 w-6 animate-spin" />
-             ) : (
-               <ShieldCheck className="h-6 w-6" />
-             )}
-             <span className="text-xs font-bold uppercase tracking-widest">Verify Integrity</span>
+            {verifying ? (
+              <Loader2 className="h-6 w-6 animate-spin" />
+            ) : (
+              <ShieldCheck className="h-6 w-6" />
+            )}
+            <span className="text-xs font-bold uppercase tracking-widest">Verify Integrity</span>
           </CardContent>
           {verificationResult && (
             <div className="absolute bottom-2 px-3 py-1 bg-white/20 rounded-full backdrop-blur-md text-[9px] font-bold border border-white/10 animate-in slide-in-from-bottom-2">
@@ -187,12 +187,12 @@ export default function BlockchainPage() {
               <CardDescription className="text-slate-400">Immutable record of all captured files and forensics</CardDescription>
             </div>
             <div className="flex gap-2">
-               <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/5 text-slate-400" disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>
-                 <ChevronLeft className="h-4 w-4" />
-               </Button>
-               <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/5 text-slate-400" onClick={() => setCurrentPage(p => p + 1)}>
-                 <ChevronRight className="h-4 w-4" />
-               </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/5 text-slate-400" disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/5 text-slate-400" onClick={() => setCurrentPage(p => p + 1)}>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </div>
           </CardHeader>
           <CardContent className="p-0">
@@ -208,9 +208,9 @@ export default function BlockchainPage() {
               <TableBody>
                 {evidenceRecords.length === 0 ? (
                   <TableRow>
-                     <TableCell colSpan={4} className="h-32 text-center text-slate-500 italic opacity-50">
-                        No evidence records found on the current chain segment
-                     </TableCell>
+                    <TableCell colSpan={4} className="h-32 text-center text-slate-500 italic opacity-50">
+                      No evidence records found on the current chain segment
+                    </TableCell>
                   </TableRow>
                 ) : (
                   evidenceRecords.map((record) => (
@@ -233,14 +233,14 @@ export default function BlockchainPage() {
                             {record.attack_type}
                           </Badge>
                           <div className="flex items-center gap-1 text-[10px] text-slate-400">
-                             <ShieldCheck className="h-3 w-3 text-slate-500" /> {record.mitre_technique}
+                            <ShieldCheck className="h-3 w-3 text-slate-500" /> {record.mitre_technique}
                           </div>
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
-                         <Button onClick={() => handleDownload(record.evidence_id, record.filename)} variant="secondary" size="sm" className="h-7 text-[10px] font-bold tracking-widest bg-primary/20 text-primary hover:bg-primary/30 border-none">
-                           DOWNLOAD
-                         </Button>
+                        <Button onClick={() => handleDownload(record.evidence_id, record.filename)} variant="secondary" size="sm" className="h-7 text-[10px] font-bold tracking-widest bg-primary/20 text-primary hover:bg-primary/30 border-none">
+                          DOWNLOAD
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
@@ -303,18 +303,18 @@ export default function BlockchainPage() {
           </Card>
 
           <Card className="bg-slate-900 border border-white/5 shadow-2xl relative overflow-hidden min-h-[140px] flex flex-col justify-center group">
-             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-               <ShieldCheck className="h-24 w-24 text-white" />
-             </div>
-             <CardContent className="p-6 relative z-10">
-               <h4 className="text-white font-bold text-sm mb-2">Immutable Protocol V1</h4>
-               <p className="text-slate-400 text-[10px] leading-relaxed mb-4 font-medium">
-                 All security telemetry is cryptographically signed and committed to the decentralized registry to prevent tamper-attacks.
-               </p>
-               <Button className="w-full bg-white/5 backdrop-blur-md hover:bg-white/10 text-white font-bold text-[10px] uppercase tracking-widest h-9 border border-white/10 shadow-lg transition-all">
-                 Network Config
-               </Button>
-             </CardContent>
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <ShieldCheck className="h-24 w-24 text-white" />
+            </div>
+            <CardContent className="p-6 relative z-10">
+              <h4 className="text-white font-bold text-sm mb-2">Immutable Protocol V1</h4>
+              <p className="text-slate-400 text-[10px] leading-relaxed mb-4 font-medium">
+                All security telemetry is cryptographically signed and committed to the decentralized registry to prevent tamper-attacks.
+              </p>
+              <Button className="w-full bg-white/5 backdrop-blur-md hover:bg-white/10 text-white font-bold text-[10px] uppercase tracking-widest h-9 border border-white/10 shadow-lg transition-all">
+                Network Config
+              </Button>
+            </CardContent>
           </Card>
         </div>
       </div>

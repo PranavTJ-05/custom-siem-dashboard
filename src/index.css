@@ -80,20 +80,24 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
+
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
   }
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
+
   @media (max-width: 1024px) {
     font-size: 20px;
   }
 }
+
 p {
   margin: 0;
 }
@@ -118,14 +122,17 @@ code {
     --font-heading: var(--font-mono);
     --font-mono: 'JetBrains Mono Variable', monospace;
   }
+
   :root {
-    --background: oklch(0.12 0.02 240); /* Very Dark Background */
+    --background: oklch(0.12 0.02 240);
+    /* Very Dark Background */
     --foreground: oklch(0.98 0.005 240);
     --card: oklch(0.15 0.02 240);
     --card-foreground: oklch(0.98 0.005 240);
     --popover: oklch(0.15 0.02 240);
     --popover-foreground: oklch(0.98 0.005 240);
-    --primary: oklch(0.6 0.18 265); /* Vibrant Indigo */
+    --primary: oklch(0.6 0.18 265);
+    /* Vibrant Indigo */
     --primary-foreground: oklch(0.12 0.02 240);
     --secondary: oklch(0.22 0.03 240);
     --secondary-foreground: oklch(0.98 0.005 240);
@@ -148,16 +155,21 @@ code {
     --sidebar-border: oklch(0.15 0.02 240);
     --sidebar-ring: oklch(0.6 0.18 265);
   }
+
   * {
     @apply border-border outline-ring;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-mono;
   }
-}.counter {
+}
+
+.counter {
   font-size: 16px;
   padding: 5px 10px;
   border-radius: 5px;
@@ -170,6 +182,7 @@ code {
   &:hover {
     border-color: var(--accent-border);
   }
+
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
@@ -201,8 +214,7 @@ code {
     z-index: 1;
     top: 34px;
     height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
   }
 
   .vite {
@@ -210,8 +222,7 @@ code {
     top: 107px;
     height: 26px;
     width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
   }
 }
 
@@ -234,9 +245,10 @@ code {
   border-top: 1px solid var(--border);
   text-align: left;
 
-  & > div {
+  &>div {
     flex: 1 1 0;
     padding: 32px;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -289,6 +301,7 @@ code {
     &:hover {
       box-shadow: var(--shadow);
     }
+
     .button-icon {
       height: 18px;
       width: 18px;
@@ -315,6 +328,7 @@ code {
 #spacer {
   height: 88px;
   border-top: 1px solid var(--border);
+
   @media (max-width: 1024px) {
     height: 48px;
   }
@@ -336,6 +350,7 @@ code {
     left: 0;
     border-left-color: var(--border);
   }
+
   &::after {
     right: 0;
     border-right-color: var(--border);
