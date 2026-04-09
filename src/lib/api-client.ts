@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-// Base API setup
-// In a real app, this would come from an environment variable: import.meta.env.VITE_API_BASE_URL
-const BASE_URL = '/api'; // Using Vite proxy to bypass CORS
+// Local dev: /api (Vite proxy) | Production: ngrok URL
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const apiClient = axios.create({
   baseURL: BASE_URL,

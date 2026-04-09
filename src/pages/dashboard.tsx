@@ -177,8 +177,8 @@ export default function Dashboard() {
               const card = (
                 <Card key={tile.name} className="hover:border-primary/50 transition-colors cursor-pointer group h-full">
                   <CardContent className="p-6 flex items-start gap-4">
-                    <div className="p-2 rounded-md bg-slate-100 group-hover:bg-primary/10 transition-colors">
-                      <tile.icon className="h-5 w-5 text-slate-600 group-hover:text-primary" />
+                    <div className="p-2 rounded-md bg-slate-50 group-hover:bg-primary/10 transition-colors">
+                      <tile.icon className="h-5 w-5 text-slate-500 group-hover:text-primary" />
                     </div>
                     <div className="flex flex-col gap-1">
                       <h3 className="font-semibold text-sm">{tile.name}</h3>

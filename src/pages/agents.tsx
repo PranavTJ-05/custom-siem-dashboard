@@ -112,7 +112,7 @@ export default function AgentsPage() {
             <TableBody>
               {filteredAgents.length > 0 ? (
                 filteredAgents.map((agent) => (
-                  <TableRow key={agent.id} className="cursor-pointer hover:bg-slate-50/50">
+                  <TableRow key={agent.id} className="cursor-pointer hover:bg-slate-50">
                     <TableCell className="font-mono text-xs">{agent.id}</TableCell>
                     <TableCell className="font-medium">{agent.name}</TableCell>
                     <TableCell className="text-xs font-mono">{agent.ip}</TableCell>

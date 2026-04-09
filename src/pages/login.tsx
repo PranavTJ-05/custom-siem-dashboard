@@ -46,12 +46,7 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-svh items-center justify-center p-6 overflow-hidden bg-background">
-      {/* Mesh Gradient Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/20 blur-[120px]" />
-        <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] rounded-full bg-indigo-500/10 blur-[100px]" />
-      </div>
+
 
       <div className="relative z-10 w-full max-w-md">
         <div className="flex flex-col items-center gap-4 mb-10 text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -66,7 +61,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <Card className="border-border/30 bg-card/50 backdrop-blur-xl shadow-2xl animate-in zoom-in-95 duration-700">
+        <Card className="border-slate-200 bg-white/80 backdrop-blur-xl shadow-xl animate-in zoom-in-95 duration-700">
           <CardHeader className="space-y-1 pb-6">
             <CardTitle className="text-2xl font-bold tracking-tight">System Login</CardTitle>
             <CardDescription className="text-sm">
